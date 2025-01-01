@@ -3,20 +3,14 @@ import streamlit as st
 from PIL import Image, ImageOps
 from pytesseract import pytesseract, image_to_string
 
-# Page configuration - MUST be the first Streamlit command
-st.set_page_config(
-    page_title="Llama OCR 2.0",
-    page_icon="🦙",
-    layout="wide",
-    initial_sidebar_state="expanded"
-)
+# Ensure Tesseract path is correctly set
+TESSERACT_PATH = "/usr/bin/tesseract"  # Default path for Linux environments
 
-# Check and set Tesseract path
-TESSERACT_PATH = "/usr/bin/tesseract"
+# Check if Tesseract is installed
 if os.path.exists(TESSERACT_PATH):
     pytesseract.tesseract_cmd = TESSERACT_PATH
 else:
-    st.error("Tesseract is not installed or not found in the expected path. Please check the setup.")
+    st.error("Tesseract is not installed or accessible in the expected path. Please check the setup.")
 
 # Image preprocessing function
 def preprocess_image(image):
@@ -31,6 +25,14 @@ def preprocess_image(image):
 def clean_ocr_output(text):
     """Clean the OCR output by removing unnecessary lines and whitespace."""
     return '\n'.join([line.strip() for line in text.splitlines() if line.strip()])
+
+# Page configuration
+st.set_page_config(
+    page_title="Llama OCR 2.0",
+    page_icon="🦙",
+    layout="wide",
+    initial_sidebar_state="expanded"
+)
 
 # Title and description
 st.markdown("<h1>🦙 Llama OCR 2.0</h1>", unsafe_allow_html=True)
