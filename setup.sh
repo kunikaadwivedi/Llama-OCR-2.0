@@ -1,14 +1,14 @@
 #!/bin/bash
 
-# Update package list
+# Update the package list
 apt-get update
 
-# Install Tesseract OCR and its dependencies
+# Install Tesseract OCR and dependencies
 apt-get install -y tesseract-ocr libtesseract-dev
 
-# Verify installation
+# Verify Tesseract installation
 echo "Checking Tesseract installation..."
 command -v tesseract || { echo "Tesseract installation failed."; exit 1; }
 
-# Print the Tesseract version for confirmation
+# Print Tesseract version and confirm path
 tesseract --version
