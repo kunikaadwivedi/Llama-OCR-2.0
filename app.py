@@ -4,7 +4,7 @@ import streamlit as st
 from PIL import Image, ImageOps
 from pytesseract import pytesseract, image_to_string
 
-# Page configuration
+# Page configuration - MUST be the first Streamlit command
 st.set_page_config(
     page_title="Llama OCR 2.0",
     page_icon="🦙",
@@ -42,14 +42,14 @@ with st.sidebar:
 
 if uploaded_file:
     image = Image.open(uploaded_file)
-    st.image(image, caption="Uploaded Image", use_column_width=True)
+    st.image(image, caption="Uploaded Image", use_container_width=True)  # Fixed deprecated parameter
 
     if st.button("Extract Text 🔍"):
         with st.spinner("Processing image..."):
             try:
                 # Preprocess the image
                 processed_image = preprocess_image(image)
-                st.image(processed_image, caption="Processed Image", use_column_width=True)
+                st.image(processed_image, caption="Processed Image", use_container_width=True)  # Fixed deprecated parameter
 
                 # Perform OCR
                 ocr_result = image_to_string(processed_image, lang='eng', config='--psm 6')
@@ -65,6 +65,7 @@ if uploaded_file:
                 st.error(f"Error during OCR processing: {e}")
 else:
     st.info("Please upload an image to start the OCR process.")
+
 
 
 # Footer
