@@ -4,7 +4,7 @@ import streamlit as st
 from PIL import Image, ImageOps
 from pytesseract import pytesseract, image_to_string
 
-# Page configuration - MUST be the first Streamlit command
+# Page configuration
 st.set_page_config(
     page_title="Llama OCR 2.0",
     page_icon="🦙",
@@ -17,8 +17,9 @@ TESSERACT_PATH = shutil.which("tesseract")  # Automatically finds Tesseract in t
 
 if TESSERACT_PATH:
     pytesseract.tesseract_cmd = TESSERACT_PATH
+    st.write(f"Tesseract found at: {TESSERACT_PATH}")
 else:
-    st.error("Tesseract is not installed or not in PATH. Please check the setup.")
+    st.error("Tesseract is not installed or not in PATH. Please ensure the setup script installs Tesseract.")
 
 # Image preprocessing function
 def preprocess_image(image):
@@ -42,14 +43,14 @@ with st.sidebar:
 
 if uploaded_file:
     image = Image.open(uploaded_file)
-    st.image(image, caption="Uploaded Image", use_container_width=True)  # Fixed deprecated parameter
+    st.image(image, caption="Uploaded Image", use_container_width=True)
 
     if st.button("Extract Text 🔍"):
         with st.spinner("Processing image..."):
             try:
                 # Preprocess the image
                 processed_image = preprocess_image(image)
-                st.image(processed_image, caption="Processed Image", use_container_width=True)  # Fixed deprecated parameter
+                st.image(processed_image, caption="Processed Image", use_container_width=True)
 
                 # Perform OCR
                 ocr_result = image_to_string(processed_image, lang='eng', config='--psm 6')
@@ -65,8 +66,5 @@ if uploaded_file:
                 st.error(f"Error during OCR processing: {e}")
 else:
     st.info("Please upload an image to start the OCR process.")
-
-
-
 # Footer
 st.markdown("<footer style='text-align: center; margin-top: 20px; font-size: 0.9em; color: #90CAF9;'>Made with ❤️ using Streamlit | Designed by Kunikaa Dwivedi</footer>", unsafe_allow_html=True)
