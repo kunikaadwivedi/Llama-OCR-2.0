@@ -4,7 +4,7 @@ import streamlit as st
 from PIL import Image, ImageOps
 from pytesseract import pytesseract, image_to_string
 
-# Page configuration - MUST be the first Streamlit command
+# Page configuration
 st.set_page_config(
     page_title="Llama OCR 2.0",
     page_icon="🦙",
@@ -13,12 +13,12 @@ st.set_page_config(
 )
 
 # Dynamically locate Tesseract executable
-TESSERACT_PATH = shutil.which("tesseract")  # Searches for Tesseract in the system PATH
+TESSERACT_PATH = shutil.which("tesseract")  # Automatically finds Tesseract in the system PATH
 
 if TESSERACT_PATH:
     pytesseract.tesseract_cmd = TESSERACT_PATH
 else:
-    st.error("Tesseract is not installed or accessible in the expected path. Please check the setup.")
+    st.error("Tesseract is not installed or not in PATH. Please check the setup.")
 
 # Image preprocessing function
 def preprocess_image(image):
@@ -65,6 +65,7 @@ if uploaded_file:
                 st.error(f"Error during OCR processing: {e}")
 else:
     st.info("Please upload an image to start the OCR process.")
+
 
 # Footer
 st.markdown("<footer style='text-align: center; margin-top: 20px; font-size: 0.9em; color: #90CAF9;'>Made with ❤️ using Streamlit | Designed by Kunikaa Dwivedi</footer>", unsafe_allow_html=True)
